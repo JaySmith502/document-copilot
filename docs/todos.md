@@ -2,9 +2,9 @@
 
 Working checklist to implement the architecture in [architecture.md](architecture.md) and satisfy the [client brief](client-brief.md).
 
-**Strategy:** backend-first (the product's value — trust, grounding, citations — all lives there), with one thin end-to-end *tracer bullet* early to de-risk the Supabase-JWT → FastAPI → AI-SDK-streaming integration seam before deepening each layer. Order follows the architecture doc's Implementation Sequence.
+**Strategy:** backend-first (the product value — trust, grounding, citations — all lives there), with one thin end-to-end *tracer bullet* early to de-risk the Supabase-JWT → FastAPI → AI-SDK-streaming integration seam before deepening each layer. Order follows the Implementation Sequence in the architecture doc.
 
-Each phase has a **✅ Done when** check — don't move on until it passes.
+Each phase has a **✅ Done when** check — do not move on until it passes.
 
 ---
 
@@ -21,21 +21,19 @@ Each phase has a **✅ Done when** check — don't move on until it passes.
 
 ---
 
-## Phase 1 — Scaffold both services *(arch step 1)*
+## Phase 1 — Scaffold backend service *(arch step 1)*
 
-- [ ] Backend: FastAPI app skeleton, `app/config.py` settings module (pydantic-settings, fail-fast on missing config), `app/main.py`, `/health` route, structlog setup
-- [ ] Backend: confirm `uv run uvicorn` boots and `/health` returns 200
-- [ ] Frontend: scaffold Vite + React + TS SPA, Tailwind + shadcn/ui, React Router, `src/lib/env.ts` (validates the 3 VITE_ vars)
-- [ ] Frontend: confirm `pnpm dev` serves a blank app
+- [x] Backend: FastAPI app skeleton, `app/config.py` settings module (pydantic-settings, fail-fast on missing config), `app/main.py`, `/health` route, structlog setup
+- [x] Backend: confirm `uv run uvicorn` boots and `/health` returns 200
 
-> ✅ **Done when:** backend `/health` responds and the frontend dev server renders, each reading config only through its settings module.
+> ✅ **Done when:** backend `/health` responds, reading config only through its settings module.
 
 ---
 
 ## Phase 2 — Data layer: models + migrations *(arch steps 2–3)*
 
-- [ ] Add SQLAlchemy models in `app/database/models.py`: `profiles`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, `document_chunks`
-- [ ] Set up Alembic (connect via Supabase **direct/session** connection string, NOT the pooler)
+- [x] Add SQLAlchemy models in `app/database/models.py`: `users`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, `document_chunks`
+- [x] Set up Alembic (connect via Supabase **direct/session** connection string, NOT the pooler)
 - [ ] First migration with explicit `op.execute()` for: `create extension vector`, `vector(1536)` embedding column, generated `tsvector` column, HNSW index (vector), GIN indexes (full-text + JSON metadata), RLS enablement + policies
 - [ ] `uv run alembic upgrade head` against Supabase; verify tables/extensions/indexes exist in dashboard
 - [ ] Commit models + migration together
@@ -46,8 +44,10 @@ Each phase has a **✅ Done when** check — don't move on until it passes.
 
 ## Phase 3 — Tracer bullet: auth + streaming end-to-end *(arch steps 4–7)*
 
-Goal: a logged-in analyst types a message and sees a streamed (stubbed) reply — proving the whole integration seam before any retrieval work.
+Goal: a logged-in analyst types a message and sees a streamed (stubbed) reply — proving the whole integration seam before any retrieval work. Starts by scaffolding the frontend, since this is where it first gets used.
 
+- [ ] Frontend: scaffold Vite + React + TS SPA, Tailwind + shadcn/ui, React Router, `src/lib/env.ts` (validates the 3 VITE_ vars) *(arch step 1)*
+- [ ] Frontend: confirm `pnpm dev` serves a blank app
 - [ ] Backend auth: `app/auth/dependencies.py` — verify `Authorization: Bearer <token>` via Supabase Auth, expose `get_current_user`; reject unauthenticated requests with 401
 - [ ] Backend: `app/database/supabase.py` — user-scoped + admin (service-role) client construction
 - [ ] Backend: `POST /chat/stream` emitting **AI SDK-compatible** message parts with a hardcoded/echoed answer (no LLM yet)

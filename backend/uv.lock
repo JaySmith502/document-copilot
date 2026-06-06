@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.12"
 
 [options]
-exclude-newer = "2026-05-30T22:28:53.5488512Z"
+exclude-newer = "2026-05-30T23:14:26.6465521Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -588,7 +588,7 @@ wheels = [
 [[package]]
 name = "document-copilot-backend"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "alembic" },
     { name = "fastapi" },
