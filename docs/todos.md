@@ -34,8 +34,8 @@ Each phase has a **✅ Done when** check — do not move on until it passes.
 
 - [x] Add SQLAlchemy models in `app/database/models.py`: `users`, `chat_threads`, `chat_messages`, `message_citations`, `source_documents`, `document_chunks`
 - [x] Set up Alembic (connect via Supabase **direct/session** connection string, NOT the pooler)
-- [ ] First migration with explicit `op.execute()` for: `create extension vector`, `vector(1536)` embedding column, generated `tsvector` column, HNSW index (vector), GIN indexes (full-text + JSON metadata), RLS enablement + policies
-- [ ] `uv run alembic upgrade head` against Supabase; verify tables/extensions/indexes exist in dashboard
+- [x] First migration with explicit `op.execute()` for: `create extension vector`, `vector(1536)` embedding column, generated `tsvector` column, HNSW index (vector), GIN indexes (full-text + JSON metadata), RLS enablement + policies
+- [x] `uv run alembic upgrade head` against Supabase; verify tables/extensions/indexes exist in dashboard
 - [ ] Commit models + migration together
 
 > ✅ **Done when:** `alembic upgrade head` applies cleanly and all tables, the `vector` extension, and indexes exist in Supabase.

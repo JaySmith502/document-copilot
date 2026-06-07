@@ -20,6 +20,27 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+# Objects created and owned by migrations, not by the SQLAlchemy models:
+# the generated tsvector column and the HNSW/GIN indexes. Autogenerate must
+# leave them alone instead of proposing to drop them on future revisions.
+# (RLS policies and the vector extension are not tracked by autogenerate.)
+MANUAL_INDEXES = {
+    "ix_document_chunks_embedding",
+    "ix_document_chunks_search_vector",
+    "ix_document_chunks_metadata",
+}
+MANUAL_COLUMNS = {
+    ("document_chunks", "search_vector"),
+}
+
+
+def include_object(obj, name, type_, reflected, compare_to) -> bool:
+    if type_ == "index" and name in MANUAL_INDEXES:
+        return False
+    if type_ == "column" and (getattr(obj.table, "name", None), name) in MANUAL_COLUMNS:
+        return False
+    return True
+
 
 def _database_url() -> str:
     url = settings.database_url
@@ -39,6 +60,7 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
+        include_object=include_object,
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -57,6 +79,7 @@ def run_migrations_online() -> None:
             connection=connection,
             target_metadata=target_metadata,
             compare_type=True,
+            include_object=include_object,
         )
         with context.begin_transaction():
             context.run_migrations()
