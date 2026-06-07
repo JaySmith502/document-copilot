@@ -36,7 +36,7 @@ Each phase has a **✅ Done when** check — do not move on until it passes.
 - [x] Set up Alembic (connect via Supabase **direct/session** connection string, NOT the pooler)
 - [x] First migration with explicit `op.execute()` for: `create extension vector`, `vector(1536)` embedding column, generated `tsvector` column, HNSW index (vector), GIN indexes (full-text + JSON metadata), RLS enablement + policies
 - [x] `uv run alembic upgrade head` against Supabase; verify tables/extensions/indexes exist in dashboard
-- [ ] Commit models + migration together
+- [x] Commit models + migration together
 
 > ✅ **Done when:** `alembic upgrade head` applies cleanly and all tables, the `vector` extension, and indexes exist in Supabase.
 
@@ -46,10 +46,10 @@ Each phase has a **✅ Done when** check — do not move on until it passes.
 
 Goal: a logged-in analyst types a message and sees a streamed (stubbed) reply — proving the whole integration seam before any retrieval work. Starts by scaffolding the frontend, since this is where it first gets used.
 
-- [ ] Frontend: scaffold Vite + React + TS SPA, Tailwind + shadcn/ui, React Router, `src/lib/env.ts` (validates the 3 VITE_ vars) *(arch step 1)*
-- [ ] Frontend: confirm `pnpm dev` serves a blank app
-- [ ] Backend auth: `app/auth/dependencies.py` — verify `Authorization: Bearer <token>` via Supabase Auth, expose `get_current_user`; reject unauthenticated requests with 401
-- [ ] Backend: `app/database/supabase.py` — user-scoped + admin (service-role) client construction
+- [x] Frontend: scaffold Vite + React + TS SPA, Tailwind + shadcn/ui, React Router, `src/lib/env.ts` (validates the 3 VITE_ vars) *(arch step 1)*
+- [x] Frontend: confirm `pnpm dev` serves a blank app
+- [x] Backend auth: `app/auth/dependencies.py` — verify `Authorization: Bearer <token>` via Supabase Auth, expose `get_current_user`; reject unauthenticated requests with 401
+- [x] Backend: `app/database/supabase.py` — user-scoped + admin (service-role) client construction
 - [ ] Backend: `POST /chat/stream` emitting **AI SDK-compatible** message parts with a hardcoded/echoed answer (no LLM yet)
 - [ ] Frontend: `src/lib/supabase.ts` (browser client), `src/lib/http.ts` (fetch wrapper + bearer injection + typed errors), `src/lib/api.ts` (threads/messages calls)
 - [ ] Frontend: Supabase email login page + session handling
