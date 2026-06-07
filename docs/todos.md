@@ -50,11 +50,11 @@ Goal: a logged-in analyst types a message and sees a streamed (stubbed) reply �
 - [x] Frontend: confirm `pnpm dev` serves a blank app
 - [x] Backend auth: `app/auth/dependencies.py` — verify `Authorization: Bearer <token>` via Supabase Auth, expose `get_current_user`; reject unauthenticated requests with 401
 - [x] Backend: `app/database/supabase.py` — user-scoped + admin (service-role) client construction
-- [ ] Backend: `POST /chat/stream` emitting **AI SDK-compatible** message parts with a hardcoded/echoed answer (no LLM yet)
-- [ ] Frontend: `src/lib/supabase.ts` (browser client), `src/lib/http.ts` (fetch wrapper + bearer injection + typed errors), `src/lib/api.ts` (threads/messages calls)
-- [ ] Frontend: Supabase email login page + session handling
-- [ ] Frontend: minimal chat page using AI SDK `useChat` + `DefaultChatTransport` pointed at `/chat/stream`
-- [ ] Wire CORS (`ALLOWED_ORIGINS`) so the SPA can reach FastAPI
+- [x] Backend: `POST /chat/stream` emitting **AI SDK-compatible** message parts with a hardcoded/echoed answer (no LLM yet)
+- [x] Frontend: `src/lib/supabase.ts` (browser client), `src/lib/http.ts` (fetch wrapper + bearer injection + typed errors), `src/lib/api.ts` (threads/messages calls)
+- [x] Frontend: Supabase email login page + session handling
+- [x] Frontend: minimal chat page using AI SDK `useChat` + `DefaultChatTransport` pointed at `/chat/stream`
+- [x] Wire CORS (`ALLOWED_ORIGINS`) so the SPA can reach FastAPI
 
 > ✅ **Done when:** an analyst logs in with email, sends a message, and sees a streamed stub reply round-trip through FastAPI with a verified JWT.
 

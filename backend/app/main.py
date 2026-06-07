@@ -6,6 +6,7 @@ import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.chat.stream import router as chat_router
 from app.config import settings
 
 
@@ -39,6 +40,9 @@ app.add_middleware(
 @app.get("/health")
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+app.include_router(chat_router)
 
 
 if __name__ == "__main__":
